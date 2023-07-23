@@ -34,8 +34,8 @@ public class ImageService implements ImageInterface {
         Image image = imageRepository.findById(id).orElse(null);
         if (image != null) {
             // Update image fields with the values from updatedImage
-            image.setImage_URL(updatedImage.getImage_URL());
-            image.setDescription(updatedImage.getDescription());
+            image.setNom_Image(updatedImage.getNom_Image());
+            image.setType_Image(updatedImage.getType_Image());
 
             return imageRepository.save(image);
         }
@@ -45,4 +45,11 @@ public class ImageService implements ImageInterface {
     public void deleteImage(Integer id) {
         imageRepository.deleteById(id);
     }
+
+    @Override
+    public List<Image> getImagesByAnnonceId(Integer annonceId) {
+        return null;
+    }
+
+
 }

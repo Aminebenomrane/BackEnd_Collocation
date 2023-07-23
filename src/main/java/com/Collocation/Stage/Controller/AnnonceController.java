@@ -3,6 +3,7 @@ package com.Collocation.Stage.Controller;
 import com.Collocation.Stage.Service.AnnonceService;
 import com.Collocation.Stage.entities.Annonce;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,28 +19,18 @@ public class AnnonceController {
         this.annonceService = annonceService;
     }
 
-    @GetMapping()
-    public List<Annonce> getAllAnnonce() {
-        return annonceService.getAllAnnonce();
-    }
-
+    @PostMapping(value = "/addpost/{user_id}")
+    public Annonce addAnnonce(@RequestBody Annonce annonce,@PathVariable int user_id  ){
+        return annonceService.addAnnonce(annonce,user_id);}
     @GetMapping("/{id}")
-    public Annonce getAnnonceById(@PathVariable Integer id) {
-        return annonceService.getAnnonceById(id);
+    public ResponseEntity<Annonce> getAnnonceById(@PathVariable int id) {
+        Annonce annonce = annonceService.getAnnonceById(id);
+        if (annonce == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(annonce);
     }
 
-    @PostMapping
-    public Annonce createAnnonce(@RequestBody Annonce annonce) {
-        return annonceService.saveAnnonce(annonce);
-    }
 
-    @PutMapping("/{id}")
-    public Annonce updateAnnonce(@PathVariable Integer id, @RequestBody Annonce updatedAnnonce) {
-        return annonceService.updateAnnonce(id, updatedAnnonce);
-    }
 
-    @DeleteMapping("/{id}")
-    public void deleteAnnonce(@PathVariable Integer id) {
-        annonceService.deleteAnnonce(id);
-    }
 }

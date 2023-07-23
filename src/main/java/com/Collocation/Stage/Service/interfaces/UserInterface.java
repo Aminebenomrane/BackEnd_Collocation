@@ -1,9 +1,10 @@
 package com.Collocation.Stage.Service.interfaces;
 
-import com.Collocation.Stage.Service.UserService;
+import com.Collocation.Stage.entities.Role;
 import com.Collocation.Stage.entities.User;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserInterface {
@@ -20,4 +21,7 @@ public interface UserInterface {
     List<User> findByUsernameStartingWithLetter(String letter);
     List<User> getUsersWithCommonHobby(String hobby);
     String saveUserWTCPWD( User user);
+     Role getUserRole(Integer userId);
+    public void addHobbyToUser(int userId, int hobbyId);
+     public User AddUserFile(Integer userId, MultipartFile file)throws IOException;
 }

@@ -14,4 +14,6 @@ public interface ImageInterface {
     Image updateImage(Integer id, Image updatedImage);
 
     void deleteImage(Integer id);
+    List<Image> getImagesByAnnonceId(Integer annonceId);
+
 }

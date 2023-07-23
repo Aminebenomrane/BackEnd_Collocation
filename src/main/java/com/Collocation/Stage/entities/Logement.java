@@ -1,5 +1,6 @@
 package com.Collocation.Stage.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,11 +34,14 @@ public class Logement {
 
     @Column(name = "Description")
     private String description;
+    @JsonIgnore
 
     // Relation One-to-One avec Annonce
     @OneToOne(mappedBy = "logement")
     private Annonce annonce;
     // Relation One-to-Many avec Piece
+    @JsonIgnore
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "logement")
     private List<Piece> pieces = new ArrayList<>();
 }

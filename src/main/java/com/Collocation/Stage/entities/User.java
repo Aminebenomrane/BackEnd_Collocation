@@ -56,17 +56,22 @@ public class User implements Serializable {
     )
     private List<Hobby> hobbies;
 
+
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "user_annonce",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "annonce_id")
-    )
+    @OneToMany(mappedBy = "user")
     private List<Annonce> annonces = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Role> roles = new ArrayList<>();
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    // Constructeurs, getters, setters, etc.
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<AnnonceFavori> favorites = new ArrayList<>();
+
+    @OneToOne
+    private Filee filee;
 }
+
+

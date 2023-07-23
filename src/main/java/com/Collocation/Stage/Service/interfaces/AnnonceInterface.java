@@ -5,13 +5,9 @@ import com.Collocation.Stage.entities.Annonce;
 import java.util.List;
 
 public interface AnnonceInterface{
-    List<Annonce> getAllAnnonce();
+    public Annonce addAnnonce(Annonce annonce, int user_id);
 
-    Annonce getAnnonceById(Integer id);
+    // Autres méthodes existantes...
 
-    Annonce saveAnnonce(Annonce annonce);
 
-    Annonce updateAnnonce(Integer id, Annonce updatedAnnonce);
-
-    void deleteAnnonce(Integer id);
 }

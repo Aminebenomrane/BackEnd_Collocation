@@ -10,13 +10,18 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Integer id_Image;
-    @Column(name = "Image_URL")
-    private String image_URL;
+    @Column(name = "Nom_Image")
+    private String nom_Image;
 
-    @Column(name = "Description")
-    private String description;
+    @Column(name = "Type_Image")
+    private String type_Image;
+    @Column(name = "Taille_Image" , length = 420000)
+    private Byte taille_Image;
     @ManyToOne
     @JoinColumn(name = "annonce_id")
     private Annonce annonce;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

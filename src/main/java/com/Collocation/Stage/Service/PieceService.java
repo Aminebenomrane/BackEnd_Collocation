@@ -6,6 +6,7 @@ import com.Collocation.Stage.entities.Piece;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -48,7 +49,31 @@ public class PieceService implements PieceInteface {
         return null;
     }
 
+    @Override
+    public List<Piece> getAvailablePieces() {
+        return pieceRepository.findAvailablePieces();
+    }
+
     public void deletePiece(Integer id) {
         pieceRepository.deleteById(id);
     }
-}
+    public Piece updatePieces(Integer id, Piece updatedPiece) {
+        Piece piece = pieceRepository.findById(id).orElse(null);
+        if (piece != null) {
+            // Mettre à jour les champs de la pièce avec les valeurs de updatedPiece
+            piece.setNb_lit(updatedPiece.getNb_lit());
+
+            // Vérifier si le nombre de lits est devenu 0
+            if (piece.getNb_lit() == 0) {
+                piece.setDisponibilite(false);
+            }
+         else {
+            piece.setDisponibilite(true);
+        }
+
+            return pieceRepository.save(piece);
+        }
+        return null;
+    }
+    }
+

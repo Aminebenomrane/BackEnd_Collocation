@@ -1,10 +1,13 @@
 package com.Collocation.Stage.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -16,10 +19,10 @@ public class Role implements Serializable {
 @Enumerated(EnumType.STRING)
     private RoleName nomRole;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     @JsonIgnore
-    private User user;
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private Set<User> users =  new HashSet<>();
 
 
 }

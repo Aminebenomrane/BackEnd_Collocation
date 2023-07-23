@@ -13,5 +13,7 @@ public interface PieceInteface {
 
     Piece updatePiece(Integer id, Piece updatedPiece);
 
+    List<Piece> getAvailablePieces() ;
     void deletePiece(Integer id);
+    Piece updatePieces(Integer id, Piece updatedPiece);
 }
