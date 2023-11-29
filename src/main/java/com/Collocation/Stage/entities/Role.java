@@ -1,8 +1,6 @@
 package com.Collocation.Stage.entities;
 
-import lombok.Builder;
-
-public enum RoleName {
+public enum Role {
     Admin,
     User;
 

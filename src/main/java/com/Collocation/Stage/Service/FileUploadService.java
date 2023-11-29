@@ -27,7 +27,7 @@ public class FileUploadService {
         this.imageRepository = imageRepository;
     }
 
-    public void uploadImage(Integer userId, Integer annonceId, MultipartFile file) throws IOException {
+   /* public void uploadImage(Integer userId, Integer annonceId, MultipartFile file) throws IOException {
         // Vérifier si l'utilisateur existe
         Optional<User> userOptional = userRepository.findById(userId);
         if (!userOptional.isPresent()) {
@@ -52,9 +52,9 @@ public class FileUploadService {
         image.setAnnonce(annonce);
 
         imageRepository.save(image);
-    }
+    }*/
 
-    public boolean deleteImage(int userId, int annonceId, int imageId) {
+    /*  public boolean deleteImage(int userId, int annonceId, int imageId) {
         Annonce annonce = annonceRepository.findById(annonceId)
                 .orElse(null);
 
@@ -82,5 +82,5 @@ public class FileUploadService {
         imageRepository.delete(image);
 
         return true; // Suppression réussie
-    }
+    }*/
 }

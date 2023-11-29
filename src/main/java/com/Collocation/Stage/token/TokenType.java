@@ -1,2 +1,5 @@
-package com.Collocation.Stage.token;public enum TokenType {
+package com.Collocation.Stage.token;
+
+public enum TokenType {
+    BEARER
 }

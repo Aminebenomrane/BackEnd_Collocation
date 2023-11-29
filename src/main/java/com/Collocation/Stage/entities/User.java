@@ -1,16 +1,27 @@
 package com.Collocation.Stage.entities;
-
+import com.Collocation.Stage.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-@Data
 @Entity
-public class User implements Serializable {
+@Inheritance(strategy = InheritanceType.JOINED)
+@Data
+
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User implements Serializable, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_user;
@@ -26,12 +37,13 @@ public class User implements Serializable {
 
     @Column(name = "Telephone")
     private String telephone;
+    private String annonce;
 
     @Column(name = "adresse")
     private String adresse;
 
-    @Column(name = "e_mail")
-    private String eMail;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -44,8 +56,7 @@ public class User implements Serializable {
     @Column(name = "Profession")
     private String profession;
 
-    @Column(name = "ImageURL")
-    private String imageURL;
+
 
     @JsonIgnore
     @ManyToMany
@@ -57,21 +68,58 @@ public class User implements Serializable {
     private List<Hobby> hobbies;
 
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Annonce> annonces = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Filee filee;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AnnonceFavori> favorites = new ArrayList<>();
 
-    @OneToOne
-    private Filee filee;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Token> tokens = new ArrayList<>();
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
+
+
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
-
-

@@ -8,12 +8,16 @@ import com.Collocation.Stage.Service.interfaces.UserInterface;
 import com.Collocation.Stage.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserInterface {
@@ -144,9 +148,7 @@ public class UserService implements UserInterface {
         return userRepository.save(user);
     }
 
-    public List<User> getUsersByRoleId(int roleId) {
-        return userRepository.findByRoleId(roleId);
-    }
+
     public void addHobbyToUser(int userId, int hobbyId) {
         User user = userRepository.findById(userId).orElse(null);
         Hobby hobby = hobbyRepository.findById(hobbyId).orElse(null);
@@ -156,19 +158,17 @@ public class UserService implements UserInterface {
             userRepository.save(user);
         } else {
             // Gérer le cas où l'utilisateur ou le hobby n'a pas été trouvé
-        }
-    }
+        }}
 
-   public List<Annonce> getAnnoncesByUser(int userId) {
+  /* public List<Annonce> getAnnoncesByUser(int userId) {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             return user.getAnnonces();
         } else {
             return Collections.emptyList();
         }
+    }*/
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
-
-
-
-
 }

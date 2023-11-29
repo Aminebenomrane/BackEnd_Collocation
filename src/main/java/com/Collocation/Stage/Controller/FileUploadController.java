@@ -17,7 +17,7 @@ public class FileUploadController {
         this.fileUploadService = fileUploadService;
     }
 
-    @PostMapping("/upload")
+  /*  @PostMapping("/upload")
     public ResponseEntity<String> uploadImage(@PathVariable("userId") Integer userId,
                                               @PathVariable("annonceId") Integer annonceId,
                                               @RequestParam("file") MultipartFile file) {
@@ -37,6 +37,6 @@ public class FileUploadController {
         } else {
             return ResponseEntity.notFound().build(); // Image non trouvée ou suppression échouée
         }
-    }
+    }*/
 
 }

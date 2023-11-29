@@ -1,2 +1,4 @@
-package com.Collocation.Stage.Repository;public interface IRoleRepository {
+package com.Collocation.Stage.Repository;
+
+public interface IRoleRepository {
 }

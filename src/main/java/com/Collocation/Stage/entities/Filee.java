@@ -26,7 +26,7 @@ public class Filee{
     private byte[] fileData;
 
     // Ajoutez ici la relation OneToOne avec l'entité User
-    @OneToOne(mappedBy = "filee")
+    @OneToOne
     private User user;
 
     public Filee(String name, String type, byte[] fileData) {

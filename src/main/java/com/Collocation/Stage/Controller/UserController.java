@@ -1,8 +1,7 @@
 package com.Collocation.Stage.Controller;
 
-import com.Collocation.Stage.Repository.HobbyRepository;
+import com.Collocation.Stage.Repository.UserRepository;
 import com.Collocation.Stage.Service.HobbyService;
-import com.Collocation.Stage.Service.RoleService;
 import com.Collocation.Stage.Service.UserService;
 import com.Collocation.Stage.Service.AnnonceService;
 import com.Collocation.Stage.entities.*;
@@ -11,27 +10,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+@CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
     private final HobbyService hobbyService;
-
+private final UserRepository userRepository;
     private final UserService userService;
     private final AnnonceService annonceService;
-    private final RoleService roleService; // Ajoutez le service de gestion des rôles
 
     @Autowired
-    public UserController(UserService userService, AnnonceService annonceService, RoleService roleService, HobbyService hobbyService) {
+    public UserController(UserService userService, AnnonceService annonceService, HobbyService hobbyService,UserRepository userRepository) {
         this.userService = userService;
         this.annonceService = annonceService;
-        this.roleService = roleService;
         this.hobbyService=hobbyService;
+        this.userRepository=userRepository;
     }
 
     @GetMapping
@@ -55,13 +54,12 @@ public class UserController {
         if (user != null) {
             user.setNom(updatedUser.getNom());
             user.setPrenom(updatedUser.getPrenom());
+            user.setRole(updatedUser.getRole());
             user.setAge(updatedUser.getAge());
-            user.setEMail(updatedUser.getEMail());
+            user.setEmail(updatedUser.getEmail());
             user.setAdresse(updatedUser.getAdresse());
-            user.setAnnonces(updatedUser.getAnnonces());
             user.setGenre(updatedUser.getGenre());
             user.setHobbies(updatedUser.getHobbies());
-            user.setImageURL(updatedUser.getImageURL());
             user.setPassword(updatedUser.getPassword());
             user.setProfession(updatedUser.getProfession());
             user.setTelephone(updatedUser.getTelephone());
@@ -119,29 +117,9 @@ public class UserController {
     public Role getUserRole(@PathVariable Integer userId) {
         return userService.getUserRole(userId);
     }
-    @PostMapping("/{userId}/role/{roleId}")
-    public ResponseEntity<String> assignRoleToUser(@PathVariable Integer userId, @PathVariable Integer roleId) {
-        User user = userService.getUserById(userId);
-        Optional<Role> optionalRole = roleService.getRoleById(roleId);
 
-        if (user != null && optionalRole.isPresent()) {
-            Role role = optionalRole.get();
-            user.setRole(role);
-            userService.saveUser(user);
-            return ResponseEntity.ok("Rôle attribué avec succès à l'utilisateur.");
-        } else {
-            return ResponseEntity.badRequest().body("Utilisateur ou rôle introuvable.");
-        }
-    }
 
-    @GetMapping("/by-role-id/{roleId}")
-    public ResponseEntity<List<User>> getUsersByRoleId(@PathVariable int roleId) {
-        List<User> users = userService.getUsersByRoleId(roleId);
-        if (users.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(users);
-    }
+
     @PostMapping("/{userId}/hobbies/{hobbyId}")
     public ResponseEntity<String> addHobbyToUser(@PathVariable int userId, @PathVariable int hobbyId) {
         User user = userService.getUserById(userId);
@@ -155,14 +133,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("L'utilisateur ou le hobby n'a pas été trouvé.");
         }
     }
-    @GetMapping("/{userId}/annonces")
-    public ResponseEntity<List<Annonce>> getAnnoncesByUser(@PathVariable int userId) {
-        List<Annonce> annonces = userService.getAnnoncesByUser(userId);
-        if (annonces.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(annonces);
-    }
+
     @PostMapping(value = "/addFileUser/{userId}")
     public User AddUserFile(@PathVariable int userId,@RequestParam("file") MultipartFile file) throws IOException {
 return userService.AddUserFile(userId,file);
